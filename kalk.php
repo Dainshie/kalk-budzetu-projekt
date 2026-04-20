@@ -28,4 +28,25 @@ class KalkBudzetu {
         
         $this->osoby[$osobaId]['bilans'] += $ilosc;
     }
+
+    public function dodajWydatek($osobaId, $ilosc, $opis, $kat = 'Inne') {
+        if (!isset($this->osoby[$osobaId])) {
+            throw new Exception("Osoba o ID: $osobaId nie istnieje");
+        }
+        
+        if ($this->osoby[$osobaId]['bilans'] < $ilosc) {
+            throw new Exception("Niewystarczające środki");
+        }
+        
+        $this->wydatki[] = [
+            'osoba_id' => $osobaId,
+            'ilosc' => $ilosc,
+            'opis' => $opis,
+            'kat' => $kat,
+            'data' => date('Y-m-d')
+        ];
+        
+        $this->osoby[$osobaId]['bilans'] -= $ilosc;
+    }
+
 }
