@@ -49,4 +49,34 @@ class KalkBudzetu {
         $this->osoby[$osobaId]['bilans'] -= $ilosc;
     }
 
+
+    public function bilansOsoby($osobaId) {
+        return isset($this->osoby[$osobaId]) ? $this->osoby[$osobaId]['bilans'] : 0;
+    }
+
+    public function dochodyOsoby($osobaId) {
+        $total = 0;
+        foreach ($this->dochody as $dochod) {
+            if ($dochod['osoba_id'] == $osobaId) {
+                $total += $dochod['ilosc'];
+            }
+        }
+        return $total;
+    }
+
+     public function wydatkiOsoby($osobaId) {
+        $total = 0;
+        foreach ($this->wydatki as $wydatek) {
+            if ($wydatek['osoba_id'] == $osobaId) {
+                $total += $wydatek['ilosc'];
+            }
+        }
+        return $total;
+    }
+    
+    public function osoby() {
+        return $this->osoby;
+    }
+
+
 }
