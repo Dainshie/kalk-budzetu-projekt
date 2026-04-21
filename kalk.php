@@ -98,7 +98,52 @@ class KalkBudzetu {
     public function getWydatki() {
         return $this->wydatki;
     }
+
+   
 }
+
+
+ if (!isset($_SESSION['kalkulator'])) {
+    $_SESSION['kalkulator'] = new KalkBudzetu();
+ }
+$kalkulator = $_SESSION['kalkulator'];
+
+$message = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    try {
+        if (isset($_POST['action'])) {
+            if ($_POST['action'] == 'dodaj_osobe') {
+                $id = count($kalkulator->osoby()) + 1;
+                $imie = htmlspecialchars($_POST['imie']);
+                $kalkulator->dodajOsobe($id, $imie);
+                $message = "Osoba '$imie' dodana pomyślnie!";
+            }
+            
+            elseif ($_POST['action'] == 'dodaj_dochod') {
+                $osoba_id = (int)$_POST['osoba_id'];
+                $ilosc = (float)$_POST['ilosc'];
+                $opis = htmlspecialchars($_POST['opis']);
+                $kat = htmlspecialchars($_POST['kat']) ?: 'Wyplata';
+                
+                $kalkulator->dodajDochod($osoba_id, $ilosc, $opis, $kat);
+            }
+            
+            elseif ($_POST['action'] == 'dodaj_wydatek') {
+                $osoba_id = (int)$_POST['osoba_id'];
+                $ilosc = (float)$_POST['ilosc'];
+                $opis = htmlspecialchars($_POST['opis']);
+                $kat = htmlspecialchars($_POST['kat']) ?: 'Inne';
+                
+                $kalkulator->dodajWydatek($osoba_id, $ilosc, $opis, $kat);
+            }
+        }
+    } catch (Exception $e) {
+        $message = "Błąd: " . $e->getMessage();
+    }
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -188,6 +233,33 @@ class KalkBudzetu {
             </div>
         </div>
     </div>
+
+    <div class="data-section">
+            <h2>Stan Osób</h2>
+            <?php if (count($kalkulator->osoby()) > 0): ?>
+                <?php foreach ($kalkulator->osoby() as $osoba): ?>
+                    <div class="person-card">
+                        <h3><?php echo $osoba['imie']; ?></h3>
+                        <div class="person-stats">
+                            <div class="stat">
+                                <div class="stat-label">Dochody</div>
+                                <div class="stat-value"><?php echo number_format($kalkulator->dochodyOsoby($osoba['id']), 2); ?> zł</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Wydatki</div>
+                                <div class="stat-value"><?php echo number_format($kalkulator->wydatkiOsoby($osoba['id']), 2); ?> zł</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Saldo</div>
+                                <div class="stat-value"><?php echo number_format($osoba['bilans'], 2); ?> zł</div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="color: #666; text-align: center; padding: 20px;">Brak osób - dodaj osobę używając formularza powyżej</p>
+            <?php endif; ?>
+        </div>
 
 
 </body>
