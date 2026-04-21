@@ -109,6 +109,24 @@ class KalkBudzetu {
     <title>Document</title>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>Kalkulator Budżetu Domowego</h1>
+        </header>
     
+        <div class="grid">
+            <div class="card">
+                <h2>Dodaj osobę</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="imie">Imię i nazwisko</label>
+                        <input type="text" id="imie" name="imie">
+                    </div>
+                    <input type="hidden" name="action" value="dodaj_osobe">
+                    <button type="submit">Dodaj osobę</button>
+                </form>
+            </div>
+
+
 </body>
 </html>
