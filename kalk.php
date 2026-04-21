@@ -126,6 +126,68 @@ class KalkBudzetu {
                     <button type="submit">Dodaj osobę</button>
                 </form>
             </div>
+            <div class="card">
+                <h2>Dodaj dochód</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="osoba_dochod">Osoba</label>
+                        <select id="osoba_dochod" name="osoba_id" required>
+                            <option value="">Wybierz osobę</option>
+                            <?php
+                                foreach ($kalkulator->osoby() as $osoba) {
+                                    echo "<option value='{$osoba['id']}'>{$osoba['imie']}</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ilosc_dochod">Kwota (zł)</label>
+                        <input type="number" id="ilosc_dochod" name="ilosc" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="opis_dochod">Opis</label>
+                        <input type="text" id="opis_dochod" name="opis" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="kat_dochod">Kategoria</label>
+                        <input type="text" id="kat_dochod" name="kat" value="Wyplata" placeholder="Wyplata">
+                    </div>
+                    <input type="hidden" name="action" value="dodaj_dochod">
+                    <button type="submit">Dodaj dochód</button>
+                </form>
+            </div>
+            <div class="card">
+                <h2>Dodaj Wydatek</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="osoba_wydatek">Osoba</label>
+                        <select id="osoba_wydatek" name="osoba_id" required>
+                            <option value="">Wybierz osobę</option>
+                            <?php
+                                foreach ($kalkulator->osoby() as $osoba) {
+                                    echo "<option value='{$osoba['id']}'>{$osoba['imie']}</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ilosc_wydatek">Kwota (zł)</label>
+                        <input type="number" id="ilosc_wydatek" name="ilosc"required>
+                    </div>
+                    <div class="form-group">
+                        <label for="opis_wydatek">Opis</label>
+                        <input type="text" id="opis_wydatek" name="opis" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="kat_wydatek">Kategoria</label>
+                        <input type="text" id="kat_wydatek" name="kat" value="Inne" placeholder="Inne">
+                    </div>
+                    <input type="hidden" name="action" value="dodaj_wydatek">
+                    <button type="submit">Dodaj wydatek</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 </body>
