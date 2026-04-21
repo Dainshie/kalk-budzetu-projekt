@@ -78,5 +78,17 @@ class KalkBudzetu {
         return $this->osoby;
     }
 
+    public function calyDochod() {
+        return array_sum(array_column($this->dochody, 'ilosc'));
+    }
+
+    public function caleWydatki() {
+        return array_sum(array_column($this->wydatki, 'ilosc'));
+    }
+    
+    public function calyBilans() {
+        return $this->calyDochod() - $this->caleWydatki();
+    }
+
 
 }
