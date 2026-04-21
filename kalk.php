@@ -260,6 +260,64 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p style="color: #666; text-align: center; padding: 20px;">Brak osób - dodaj osobę używając formularza powyżej</p>
             <?php endif; ?>
         </div>
+        
+        <?php if (count($kalkulator->getDochody()) > 0): ?>
+            <div class="data-section">
+                <h2>Historia Dochodów</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Osoba</th>
+                            <th>Kwota</th>
+                            <th>Opis</th>
+                            <th>Kategoria</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($kalkulator->getDochody() as $dochod): ?>
+                            <tr class="income-row">
+                                <td><?php echo $kalkulator->osoby()[$dochod['osoba_id']]['imie']; ?></td>
+                                <td><strong><?php echo number_format($dochod['ilosc'], 2); ?> zł</strong></td>
+                                <td><?php echo $dochod['opis']; ?></td>
+                                <td><?php echo $dochod['kat']; ?></td>
+                                <td><?php echo $dochod['data']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+        
+        <!-- Historia wydatków -->
+        <?php if (count($kalkulator->getWydatki()) > 0): ?>
+            <div class="data-section">
+                <h2>Historia Wydatków</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Osoba</th>
+                            <th>Kwota</th>
+                            <th>Opis</th>
+                            <th>Kategoria</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($kalkulator->getWydatki() as $wydatek): ?>
+                            <tr class="expense-row">
+                                <td><?php echo $kalkulator->osoby()[$wydatek['osoba_id']]['imie']; ?></td>
+                                <td><strong><?php echo number_format($wydatek['ilosc'], 2); ?> zł</strong></td>
+                                <td><?php echo $wydatek['opis']; ?></td>
+                                <td><?php echo $wydatek['kat']; ?></td>
+                                <td><?php echo $wydatek['data']; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+    </div>
 
 
 </body>
