@@ -99,6 +99,25 @@ class KalkBudzetu {
         return $this->wydatki;
     }
 
+    public function getWydatkiByKategoria() {
+        $wydatkiByKat = [];
+        foreach ($this->wydatki as $wydatek) {
+            $osobaId = $wydatek['osoba_id'];
+            $kat = $wydatek['kat'];
+            
+            if (!isset($wydatkiByKat[$osobaId])) {
+                $wydatkiByKat[$osobaId] = [];
+            }
+            
+            if (!isset($wydatkiByKat[$osobaId][$kat])) {
+                $wydatkiByKat[$osobaId][$kat] = 0;
+            }
+            
+            $wydatkiByKat[$osobaId][$kat] += $wydatek['ilosc'];
+        }
+        return $wydatkiByKat;
+    }
+
    
 }
 
@@ -261,7 +280,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php endif; ?>
         </div>
         
-        <?php if (count($kalkulator->getDochody()) > 0): ?>
+        <?php if (count($kalkulator->getWydatkiByKategoria()) > 0): ?>
+            <div class="data-section">
+                <h2>Podsumowanie Wydatków - Kto ile wydał na co</h2>
+                <div class="summary-grid">
+                    <?php foreach ($kalkulator->getWydatkiByKategoria() as $osobaId => $kategorie): ?>
+                        <div class="summary-card">
+                            <h3><?php echo $kalkulator->osoby()[$osobaId]['imie']; ?></h3>
+                            <div class="category-breakdown">
+                                <?php 
+                                    $razem = 0;
+                                    foreach ($kategorie as $kat => $kwota): 
+                                        $razem += $kwota;
+                                ?>
+                                    <div class="category-item">
+                                        <span class="category-name"><?php echo $kat; ?></span>
+                                        <span class="category-amount"><?php echo number_format($kwota, 2); ?> zł</span>
+                                    </div>
+                                <?php endforeach; ?>
+                                <div class="category-total">
+                                    <strong>Razem wydatków:</strong>
+                                    <strong><?php echo number_format($razem, 2); ?> zł</strong>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        
             <div class="data-section">
                 <h2>Historia Dochodów</h2>
                 <table>
@@ -287,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </tbody>
                 </table>
             </div>
-        <?php endif; ?>
+        
         
         <?php if (count($kalkulator->getWydatki()) > 0): ?>
             <div class="data-section">
