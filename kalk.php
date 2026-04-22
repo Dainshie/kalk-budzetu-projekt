@@ -102,10 +102,10 @@ class KalkBudzetu {
    
 }
 
-
  if (!isset($_SESSION['kalkulator'])) {
     $_SESSION['kalkulator'] = new KalkBudzetu();
  }
+
 $kalkulator = $_SESSION['kalkulator'];
 
 $message = '';
@@ -117,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $id = count($kalkulator->osoby()) + 1;
                 $imie = htmlspecialchars($_POST['imie']);
                 $kalkulator->dodajOsobe($id, $imie);
-                $message = "Osoba '$imie' dodana pomyślnie!";
             }
             
             elseif ($_POST['action'] == 'dodaj_dochod') {
@@ -470,7 +469,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         <?php endif; ?>
         
-        <!-- Historia wydatków -->
         <?php if (count($kalkulator->getWydatki()) > 0): ?>
             <div class="data-section">
                 <h2>Historia Wydatków</h2>
